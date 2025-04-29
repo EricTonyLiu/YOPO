@@ -302,9 +302,9 @@ bool UnityBridge::handleOutput(FrameID& frameID) {
 	return true;
 }
 
-bool UnityBridge::spawnTrees(Ref<Vector<3>> bounding_box_, Ref<Vector<3>> bounding_box_origin_, Scalar avg_tree_spacing_) {
+bool UnityBridge::spawnTrees(Ref<Vector<3>> bounding_box_, Ref<Vector<3>> bounding_box_origin_, Scalar avg_tree_spacing_, bool remove_scene) {
 	printf("Start Spawn Trees... \n");
-	rmTrees();
+	if(remove_scene) rmTrees();
 	// 循环多次避免偶尔一次没render上，后面树再也无法生成
 	for (size_t i = 0; i < 3; i++)
 		refreshUnity(10086 + i);

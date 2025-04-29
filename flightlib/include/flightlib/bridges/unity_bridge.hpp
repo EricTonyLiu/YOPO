@@ -74,7 +74,7 @@ class UnityBridge {
 	bool placeTrees(TreeMessage_t &tree_msg);
 	void rmTrees();
 	void pointCloudGenerator(PointCloudMessage_t &pcd_msg);
-	bool spawnTrees(Ref<Vector<3>> bounding_box_, Ref<Vector<3>> bounding_box_origin_, Scalar avg_tree_spacing_);
+	bool spawnTrees(Ref<Vector<3>> bounding_box_, Ref<Vector<3>> bounding_box_origin_, Scalar avg_tree_spacing_, bool remove_scene = true);
 
    private:
 	template<typename T>

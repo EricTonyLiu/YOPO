@@ -39,6 +39,42 @@ void VecEnv<EnvBase>::init(void) {
 		bounding_box_origin_(i) = cfg_["unity"]["bounding_box_origin"][i].as<Scalar>();
 	}
 
+	// Init Multiple Scene
+	use_multiple_scene = cfg_["enable_multiple_scene"].as<bool>();
+	if(use_multiple_scene)
+	{
+		logger_.info("USE MULTIPLE SCENE");
+		YAML::Node multi_scene = cfg_["multiple_scene_env"];
+		num_scenes_ = multi_scene["scene_count"].as<int>();
+		if( num_scenes_ == 1)
+		{
+			logger_.warn("Only One Scene in the yaml file. Please Check Carefully");
+		}
+		else
+		{
+			const YAML::Node& scenes = multi_scene["scenes"];
+			for (int i = 1; i <= num_scenes_; ++i) {
+				std::string scene_key = "scene_" + std::to_string(i);
+				logger_.info(scene_key);
+				const YAML::Node& scene = scenes[scene_key];
+				std::string scene_name = scene["scene_name"].as<std::string>();
+				
+				double spacing = scene["spacing"].as<Scalar>();
+		
+				Vector<3> bounding_box;
+				Vector<3> bounding_box_origin;
+				for (int j = 0; j < 3; ++j) {
+					bounding_box(j) = scene["bounding_box"][j].as<Scalar>();
+					bounding_box_origin(j) = scene["bounding_box_origin"][j].as<Scalar>();
+				}
+				scene_names_.push_back(scene_name);
+				scene_bounding_box_.push_back(bounding_box);
+				scene_bounding_box_origin_.push_back(bounding_box_origin);
+				scene_avg_tree_spacing_.push_back(spacing);
+			}
+		}
+	}
+
 	// set threads
 	omp_set_num_threads(cfg_["env"]["num_threads"].as<int>());
 
@@ -260,7 +296,8 @@ template<typename EnvBase>
 bool VecEnv<EnvBase>::spawnTrees() {
 	if (!unity_ready_ || unity_bridge_ptr_ == nullptr)
 		return false;
-	bool spawned = unity_bridge_ptr_->spawnTrees(bounding_box_, bounding_box_origin_, avg_tree_spacing_);
+	bool remove_scene = true;
+	bool spawned = unity_bridge_ptr_->spawnTrees(bounding_box_, bounding_box_origin_, avg_tree_spacing_,remove_scene);
 	return spawned;
 }
 
@@ -328,15 +365,27 @@ bool VecEnv<EnvBase>::spawnMultipleScenesAndSavePointcloud(int ply_id_in) {
 		logger_.error("No scene is defined.");
 		return false;
 	}
-
+	bool remove_scene = false;
 	for( int scene_idex = 0;scene_idex < num_scenes_; scene_idex++)
 	{
 		std::cout << "Spawn scene: " << scene_names_[scene_idex] << std::endl;
-		bool spawned = unity_bridge_ptr_->spawnTrees(scene_bounding_box_[scene_idex], scene_bounding_box_origin_[scene_idex], scene_avg_tree_spacing_[scene_idex]);
-	}
+		if(scene_idex == 0)
+		{
+			bool remove_scene  = true;
+		}
+		bool spawned = unity_bridge_ptr_->spawnTrees(scene_bounding_box_[scene_idex], 
+											scene_bounding_box_origin_[scene_idex], 
+											scene_avg_tree_spacing_[scene_idex],
+											remove_scene);
 
-	Vector<3> min_corner = bounding_box_origin_ - 0.5 * bounding_box_;
-	Vector<3> max_corner = bounding_box_origin_ + 0.5 * bounding_box_;
+	}
+	//
+	Vector<3> min_origin = scene_bounding_box_origin_[0];
+	Vector<3> max_origin = scene_bounding_box_origin_[num_scenes_ - 1];
+	Vector<3> min_box = scene_bounding_box_[0];
+	Vector<3> max_box = scene_bounding_box_[num_scenes_ - 1];
+	Vector<3> min_corner = min_origin - 0.5 * min_box;
+	Vector<3> max_corner = max_origin + 0.5 * max_box;
 	unity_bridge_ptr_->generatePointcloud(min_corner, max_corner, ply_id, ply_path_, scene_id_, pointcloud_resolution_);
 
 	usleep(1 * 1e6);  // waitting 1s for generating completely

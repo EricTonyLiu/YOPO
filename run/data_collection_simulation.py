@@ -5,7 +5,7 @@ import os
 import cv2
 import numpy as np
 from tqdm import tqdm
-from flightgym import QuadrotorEnv_v1
+from flightgym_adapt import QuadrotorEnv_v1
 from flightpolicy.envs import vec_env_wrapper as wrapper
 from ruamel.yaml import YAML, RoundTripDumper, dump
 
@@ -36,7 +36,8 @@ def main():
     cfg["env"]["render"] = True
     cfg["env"]["supervised"] = False
     cfg["env"]["imitation"] = False
-
+    
+    
     os.system(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightrender/RPG_Flightmare/flightmare.x86_64 &")
     env = QuadrotorEnv_v1(dump(cfg, Dumper=RoundTripDumper), False)
     env = wrapper.FlightEnvVec(env)
@@ -48,10 +49,14 @@ def main():
     home_dir = os.environ["ADAPTIVE_POLICY_PATH"] + cfg["env"]["dataset_path"]
     if not os.path.exists(home_dir):
         os.mkdir(home_dir)
-
+    use_multiple_scene = cfg["enable_multiple_scene"]
+    
     for epoch_i in range(epoch):
         spacing = cfg["unity"]["avg_tree_spacing"]
-        env.spawnTreesAndSavePointcloud(epoch_i, spacing)
+        if(use_multiple_scene):
+            env.spawnMultipleScenesAndSavePointcloud(epoch_i)
+        else:
+            env.spawnTreesAndSavePointcloud(epoch_i, spacing)
         env.setMapID(np.array([-1]))
         env.reset(random=True)
 

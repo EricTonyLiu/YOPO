@@ -6,7 +6,26 @@ env:
   dataset_path: "/run/yopo_sim/"  # path of training dataset
   ply_path: "/run/yopo_sim/"      # path of the point could of training data
 
-
+enable_multiple_scene : yes
+multiple_scene_env:
+  scene_count: 3
+  scenes:
+    scene_1:
+      scene_name: dense_forest
+      bounding_box: [20, 80, 11]
+      bounding_box_origin: [-30, 20, 2.5]
+      spacing: 4
+    scene_2:
+      scene_name: sparse_forest
+      bounding_box: [20, 80, 11]
+      bounding_box_origin: [-10, 20, 2.5]
+      spacing: 6
+    scene_3:
+      scene_name: empty_forest
+      bounding_box: [20, 80, 11]
+      bounding_box_origin: [10, 20, 2.5]
+      spacing: 8
+  
 unity:
   spawn_trees: true
   avg_tree_spacing: 4                 # average spacing between trees

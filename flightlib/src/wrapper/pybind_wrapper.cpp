@@ -25,7 +25,8 @@ PYBIND11_MODULE(flightgym_adapt, m) {
 	    .def("spawnTrees", &VecEnv<QuadrotorEnv>::spawnTrees)
 	    .def("savePointcloud", &VecEnv<QuadrotorEnv>::savePointcloud)
 	    .def("spawnTreesAndSavePointcloud", &VecEnv<QuadrotorEnv>::spawnTreesAndSavePointcloud)
-	    // set
+	    .def("spawnMultipleScenesAndSavePointcloud", &VecEnv<QuadrotorEnv>::spawnMultipleScenesAndSavePointcloud)
+		// set
 	    .def("step", &VecEnv<QuadrotorEnv>::step)
 	    .def("reset", &VecEnv<QuadrotorEnv>::reset)
 	    .def("setState", &VecEnv<QuadrotorEnv>::setState)

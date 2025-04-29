@@ -168,6 +168,9 @@ class FlightEnvVec(VecEnv):
     def spawnTreesAndSavePointcloud(self, ply_idx=-1, spacing=-1):
         self.wrapper.spawnTreesAndSavePointcloud(ply_idx, spacing)
 
+    def spawnMultipleScenesAndSavePointcloud(self, ply_idx=-1):
+        self.wrapper.spawnMultipleScenesAndSavePointcloud(ply_idx)
+
     def seed(self, seed=0):
         self.wrapper.setSeed(seed)
 

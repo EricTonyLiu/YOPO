@@ -95,10 +95,11 @@ class VecEnv {
 	
 
 	// Multiple Scene Generation
+	bool use_multiple_scene;
 	int num_scenes_;
 	std::vector<std::string> scene_names_;
-	std::vector<Eigen::Vector3d> scene_bounding_box_;
-	std::vector<Eigen::Vector3d> scene_bounding_box_origin_;
+	std::vector<Vector<3>> scene_bounding_box_;
+	std::vector<Vector<3>> scene_bounding_box_origin_;
 	std::vector<Scalar> scene_avg_tree_spacing_;
 
 	// other variables
