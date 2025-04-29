@@ -6,6 +6,7 @@ env:
   dataset_path: "/run/yopo_sim/"  # path of training dataset
   ply_path: "/run/yopo_sim/"      # path of the point could of training data
 
+
 unity:
   spawn_trees: true
   avg_tree_spacing: 4                 # average spacing between trees

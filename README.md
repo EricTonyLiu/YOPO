@@ -59,10 +59,10 @@ sudo apt-get update && apt-get install -y --no-install-recommends \
    libpcl-dev
 ```
 
-**2. Add sourcing of your catkin workspace as FLIGHTMARE_PATH environment variable**
+**2. Add sourcing of your catkin workspace as ADAPTIVE_POLICY_PATH environment variable**
 ```
 # modify "~/YOPO" to your path
-echo "export FLIGHTMARE_PATH=~/YOPO" >> ~/.bashrc
+echo "export ADAPTIVE_POLICY_PATH=~/adaptive_yopo/YOPO" >> ~/.bashrc
 source ~/.bashrc
 ```
 **3. Unity** 

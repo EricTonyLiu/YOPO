@@ -50,7 +50,7 @@ class YopoNet:
         self.Rotation_bc = R.from_euler('ZYX', [0, self.config['pitch_angle_deg'], 0], degrees=True).as_matrix()
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
+        cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
         self.lattice_space = LatticeParam(cfg)
         self.lattice_primitive = LatticePrimitive(self.lattice_space)
 

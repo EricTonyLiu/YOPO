@@ -4,6 +4,24 @@ quadrotor_env:
   bounding_box_origin: [-10, 20, 2.5]
   sim_dt: 0.1                         # sim_dt in imitation learning and testing
 
+multiple_scene_env:
+  scene_num: 3
+  scenes:
+    - scene_name: "dense_forest"
+      scene_bbox: [60.0, 60.0, 2.0]
+      scene_bbox_origin: [-10, 20, 2.5]
+      spacing: 4.0
+    
+    - scene_name: "sparse_forest"
+      scene_bbox: [60.0, 60.0, 2.0]
+      scene_bbox_origin: [-10, 20, 2.5]
+      spacing: 6.0
+
+    - scene_name: "empty_forest"
+      scene_bbox: [60.0, 60.0, 2.0]
+      scene_bbox_origin: [-10, 20, 2.5]
+      spacing: 8.0
+    
 data_collection:                      # range of random attitude in data collection
   roll_var: 0.01
   pitch_var: 0.01

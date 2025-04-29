@@ -18,7 +18,7 @@ class FlightEnvVec(VecEnv):
         self.reward_dim = self.wrapper.getRewDim()
         self.img_width = self.wrapper.getImgWidth()
         self.img_height = self.wrapper.getImgHeight()
-        cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
+        cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
         scale = 32  # The downsampling factor of backbone
         self.network_height = scale * cfg["vertical_num"]
         self.network_width = scale * cfg["horizon_num"]

@@ -232,18 +232,18 @@ endif()
 
 if(FLIGHTLIB_GYM_SOURCES)
 	# flightlib_gym (python3 binding with Pybind11)
-	pybind11_add_module(flightgym MODULE
+	pybind11_add_module(flightgym_adapt MODULE
 		${FLIGHTLIB_GYM_SOURCES})
 
 	if(EIGEN3_FOUND)
-		target_include_directories(flightgym PRIVATE
+		target_include_directories(flightgym_adapt PRIVATE
 
 			# ${PROJECT_SOURCE_DIR}/externals/pybind11-src/include
 			${PYBIND11_INCLUDE_DIR}
 			${PROJECT_SOURCE_DIR}/include
 			${EIGEN3_INCLUDE_DIR})
 	else()
-		target_include_directories(flightgym PRIVATE
+		target_include_directories(flightgym_adapt PRIVATE
 
 			# ${PROJECT_SOURCE_DIR}/externals/pybind11-src/include
 			${PYBIND11_INCLUDE_DIR}
@@ -251,7 +251,7 @@ if(FLIGHTLIB_GYM_SOURCES)
 			${PROJECT_SOURCE_DIR}/include)
 	endif()
 
-	target_link_libraries(flightgym PRIVATE ${LIBRARY_NAME})
+	target_link_libraries(flightgym_adapt PRIVATE ${LIBRARY_NAME})
 endif()
 
 if(ENABLE_BLAS AND BLAS_FOUND AND LAPACK_FOUND)

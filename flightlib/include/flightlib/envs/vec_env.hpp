@@ -41,6 +41,7 @@ class VecEnv {
 	bool spawnTrees();
 	bool savePointcloud(int ply_id);
 	bool spawnTreesAndSavePointcloud(int ply_id_in = -1, float spacing = -1);
+	bool spawnMultipleScenesAndSavePointcloud(int ply_id_in = -1);
 	void close();
 	void setSeed(const int seed);
 
@@ -91,6 +92,14 @@ class VecEnv {
 	Scalar avg_tree_spacing_;
 	Vector<3> bounding_box_, bounding_box_origin_;
 	Scalar pointcloud_resolution_;
+	
+
+	// Multiple Scene Generation
+	int num_scenes_;
+	std::vector<std::string> scene_names_;
+	std::vector<Eigen::Vector3d> scene_bounding_box_;
+	std::vector<Eigen::Vector3d> scene_bounding_box_origin_;
+	std::vector<Scalar> scene_avg_tree_spacing_;
 
 	// other variables
 	std::string ply_path_;

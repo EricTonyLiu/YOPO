@@ -33,7 +33,7 @@ def parser():
 if __name__ == "__main__":
     args = parser().parse_args()
     # load configurations
-    cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
+    cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
     cfg["env"]["num_envs"] = 1
     cfg["env"]["supervised"] = False
     cfg["env"]["imitation"] = False

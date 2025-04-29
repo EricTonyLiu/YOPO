@@ -35,7 +35,7 @@ Eigen::Vector3i m_size;
 Eigen::Vector3i m_origin;
 
 void map_input() {
-	std::string ply_path_ = getenv("FLIGHTMARE_PATH") + std::string("/flightrender/RPG_Flightmare/pointcloud_data/pointcloud-0.ply");
+	std::string ply_path_ = getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightrender/RPG_Flightmare/pointcloud_data/pointcloud-0.ply");
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::io::loadPLYFile<pcl::PointXYZ>(ply_path_, *cloud);
 
@@ -128,11 +128,11 @@ using namespace traj_eval;
 int main(int argc, char** argv) {
 	map_input();
 
-	std::string log_file = getenv("FLIGHTMARE_PATH") + std::string("/run/utils/dist_log.csv");
+	std::string log_file = getenv("ADAPTIVE_POLICY_PATH") + std::string("/run/utils/dist_log.csv");
 	std::cout << "log path:" << log_file << std::endl;
 	dist_log.open(log_file.c_str(), std::ios::out);
 
-	std::string log_file2 = getenv("FLIGHTMARE_PATH") + std::string("/run/utils/ctrl_log.csv");
+	std::string log_file2 = getenv("ADAPTIVE_POLICY_PATH") + std::string("/run/utils/ctrl_log.csv");
 	ctrl_log.open(log_file2.c_str(), std::ios::out);
 
 	ros::init(argc, argv, "traj_eval");

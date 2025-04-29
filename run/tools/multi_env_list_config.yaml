@@ -1,0 +1,26 @@
+envs:
+- name: quadrotor_env_1
+  collect_data: yes
+  bounding_box: [58.43, 89.77, 14.52]
+  bounding_box_origin: [69.02, 0.39, 99.63]
+  sim_dt: 0.72
+- name: quadrotor_env_2
+  collect_data: yes
+  bounding_box: [67.85, 40.44, 4.96]
+  bounding_box_origin: [16.88, 91.7, 23.9]
+  sim_dt: 0.68
+- name: quadrotor_env_3
+  collect_data: yes
+  bounding_box: [0.91, 12.54, 5.04]
+  bounding_box_origin: [97.94, 83.68, 7.25]
+  sim_dt: 0.62
+- name: quadrotor_env_4
+  collect_data: yes
+  bounding_box: [11.24, 73.37, 48.84]
+  bounding_box_origin: [55.13, 42.16, 15.75]
+  sim_dt: 0.3
+- name: quadrotor_env_5
+  collect_data: yes
+  bounding_box: [76.6, 35.01, 86.23]
+  bounding_box_origin: [77.13, 5.18, 14.77]
+  sim_dt: 0.29

@@ -2,7 +2,7 @@
 
 namespace flightlib {
 
-QuadrotorEnv::QuadrotorEnv() : QuadrotorEnv(getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/quadrotor_env.yaml")) {}
+QuadrotorEnv::QuadrotorEnv() : QuadrotorEnv(getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/quadrotor_env.yaml")) {}
 
 QuadrotorEnv::QuadrotorEnv(const std::string &cfg_path) : EnvBase() {
 	// load configuration file

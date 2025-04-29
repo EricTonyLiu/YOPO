@@ -18,9 +18,9 @@ namespace map_visual {
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 
 void pcl_input() {
-	std::string cfg_path  = getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/quadrotor_ros.yaml");
+	std::string cfg_path  = getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/quadrotor_ros.yaml");
 	YAML::Node cfg_       = YAML::LoadFile(cfg_path);
-	std::string ply_path_ = getenv("FLIGHTMARE_PATH") + cfg_["ply_path"].as<std::string>() + "pointcloud-0.ply";
+	std::string ply_path_ = getenv("ADAPTIVE_POLICY_PATH") + cfg_["ply_path"].as<std::string>() + "pointcloud-0.ply";
 	pcl::io::loadPLYFile<pcl::PointXYZ>(ply_path_, *cloud);
 	std::cout << "size of pointcloud: " << cloud->points.size() << std::endl;
 }
@@ -51,7 +51,7 @@ void odom_cb(const nav_msgs::Odometry::ConstPtr odom_msg, ros::Publisher* local_
 	local_map_pub->publish(local_map);
 
 	// 3. publish UAV model
-	std::string mesh_resource = std::string("file://") + getenv("FLIGHTMARE_PATH") + std::string("/flightlib/src/ros_nodes/model/uav.dae");
+	std::string mesh_resource = std::string("file://") + getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/src/ros_nodes/model/uav.dae");
 
 	visualization_msgs::Marker meshROS;
 	meshROS.header.frame_id = "world";

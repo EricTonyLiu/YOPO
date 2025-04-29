@@ -3,7 +3,7 @@
 namespace flightlib {
 
 template<typename EnvBase>
-VecEnv<EnvBase>::VecEnv() : VecEnv(getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/vec_env.yaml")) {}
+VecEnv<EnvBase>::VecEnv() : VecEnv(getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/vec_env.yaml")) {}
 
 template<typename EnvBase>
 VecEnv<EnvBase>::VecEnv(const YAML::Node& cfg_node) : cfg_(cfg_node) {
@@ -31,7 +31,7 @@ void VecEnv<EnvBase>::init(void) {
 	num_envs_              = cfg_["env"]["num_envs"].as<int>();
 	num_threads_           = cfg_["env"]["num_threads"].as<int>();
 	scene_id_              = cfg_["env"]["scene_id"].as<SceneID>();
-	ply_path_              = getenv("FLIGHTMARE_PATH") + cfg_["env"]["ply_path"].as<std::string>();
+	ply_path_              = getenv("ADAPTIVE_POLICY_PATH") + cfg_["env"]["ply_path"].as<std::string>();
 	avg_tree_spacing_      = cfg_["unity"]["avg_tree_spacing"].as<Scalar>();
 	pointcloud_resolution_ = cfg_["unity"]["pointcloud_resolution"].as<Scalar>();
 	for (int i = 0; i < 3; ++i) {
@@ -287,7 +287,7 @@ bool VecEnv<EnvBase>::spawnTreesAndSavePointcloud(int ply_id_in, float spacing) 
 		return false;
 
 	bool spawned = unity_bridge_ptr_->spawnTrees(bounding_box_, bounding_box_origin_, avg_tree_spacing);
-
+	
 	Vector<3> min_corner = bounding_box_origin_ - 0.5 * bounding_box_;
 	Vector<3> max_corner = bounding_box_origin_ + 0.5 * bounding_box_;
 	unity_bridge_ptr_->generatePointcloud(min_corner, max_corner, ply_id, ply_path_, scene_id_, pointcloud_resolution_);
@@ -314,6 +314,52 @@ bool VecEnv<EnvBase>::spawnTreesAndSavePointcloud(int ply_id_in, float spacing) 
 	return true;
 }
 
+
+template<typename EnvBase>
+bool VecEnv<EnvBase>::spawnMultipleScenesAndSavePointcloud(int ply_id_in) {
+	int ply_id = envs_[0]->getMapNum();
+	if (ply_id_in >= 0)
+		ply_id = ply_id_in;
+
+	if (!unity_ready_ || unity_bridge_ptr_ == nullptr)
+		return false;
+	if (num_scenes_ <= 0)
+	{
+		logger_.error("No scene is defined.");
+		return false;
+	}
+
+	for( int scene_idex = 0;scene_idex < num_scenes_; scene_idex++)
+	{
+		std::cout << "Spawn scene: " << scene_names_[scene_idex] << std::endl;
+		bool spawned = unity_bridge_ptr_->spawnTrees(scene_bounding_box_[scene_idex], scene_bounding_box_origin_[scene_idex], scene_avg_tree_spacing_[scene_idex]);
+	}
+
+	Vector<3> min_corner = bounding_box_origin_ - 0.5 * bounding_box_;
+	Vector<3> max_corner = bounding_box_origin_ + 0.5 * bounding_box_;
+	unity_bridge_ptr_->generatePointcloud(min_corner, max_corner, ply_id, ply_path_, scene_id_, pointcloud_resolution_);
+
+	usleep(1 * 1e6);  // waitting 1s for generating completely
+
+	// KDtree, for collision detection
+	std::shared_ptr<pcl::search::KdTree<pcl::PointXYZ>> kdtree = std::make_shared<pcl::search::KdTree<pcl::PointXYZ>>();
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	std::cout << "Map Path: " << ply_path_ + "pointcloud-" + std::to_string(ply_id) + ".ply" << std::endl;
+	pcl::io::loadPLYFile<pcl::PointXYZ>(ply_path_ + "pointcloud-" + std::to_string(ply_id) + ".ply", *cloud);
+	kdtree->setInputCloud(cloud);  // 0.3s
+
+	// ESDF, for gradient calculation (map_id is required)
+	Eigen::Vector3d map_boundary_min, map_boundary_max;
+	std::shared_ptr<sdf_tools::SignedDistanceField> esdf_map = traj_opt::SdfConstruction(cloud, map_boundary_min, map_boundary_max);
+
+	for (int i = 0; i < num_envs_; i++) {
+		envs_[i]->addKdtree(kdtree);
+		envs_[i]->addESDFMap(esdf_map);
+		envs_[i]->addMapSize(map_boundary_min, map_boundary_max);
+	}
+
+	return true;
+}
 // For supervised learning
 template<typename EnvBase>
 void VecEnv<EnvBase>::generateMaps() {

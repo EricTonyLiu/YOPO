@@ -7,7 +7,7 @@ FlightPilot::FlightPilot(const ros::NodeHandle& nh, const ros::NodeHandle& pnh)
 	// quad initialization
 	quad_ptr_ = std::make_shared<Quadrotor>();
 	// load parameters
-	std::string cfg_path = getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/quadrotor_ros.yaml");
+	std::string cfg_path = getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/quadrotor_ros.yaml");
 	YAML::Node cfg_      = YAML::LoadFile(cfg_path);
 	loadParams(cfg_);
 	configCamera(cfg_);
@@ -202,7 +202,7 @@ bool FlightPilot::loadParams(const YAML::Node& cfg) {
 		bounding_box_origin_(i) = cfg["unity"]["bounding_box_origin"][i].as<Scalar>();
 	}
 	pointcloud_resolution_ = cfg["unity"]["pointcloud_resolution"].as<Scalar>();
-	ply_path_              = getenv("FLIGHTMARE_PATH") + cfg["ply_path"].as<std::string>();
+	ply_path_              = getenv("ADAPTIVE_POLICY_PATH") + cfg["ply_path"].as<std::string>();
 	if (!boost::filesystem::exists(ply_path_)) {
 		boost::filesystem::create_directories(ply_path_);
 		std::cout << "Directory created: " << ply_path_ << std::endl;

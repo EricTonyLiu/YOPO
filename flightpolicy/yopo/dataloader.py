@@ -10,7 +10,7 @@ from scipy.spatial.transform import Rotation as R
 class YopoDataset(Dataset):
     def __init__(self):
         super(YopoDataset, self).__init__()
-        cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
+        cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
         scale = 32  # 神经网络下采样倍数
         self.height = scale * cfg["vertical_num"]
         self.width = scale * cfg["horizon_num"]
@@ -27,8 +27,8 @@ class YopoDataset(Dataset):
         self.a_var = multiple_ * multiple_ * multiple_ * multiple_ * np.array([cfg["ax_var_unit"], cfg["ay_var_unit"], cfg["az_var_unit"]])
 
         print("Loading dataset, it may take a while...")
-        data_cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
-        data_dir = os.environ["FLIGHTMARE_PATH"] + data_cfg["env"]["dataset_path"]
+        data_cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
+        data_dir = os.environ["ADAPTIVE_POLICY_PATH"] + data_cfg["env"]["dataset_path"]
 
         self.img_list = []
         self.map_idx = []

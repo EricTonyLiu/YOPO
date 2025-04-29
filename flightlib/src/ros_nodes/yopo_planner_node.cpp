@@ -311,7 +311,7 @@ int main(int argc, char** argv) {
 	ros::init(argc, argv, "yopo_test");
 	ros::NodeHandle nh;
 
-	string cfg_path     = getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/traj_opt.yaml");
+	string cfg_path     = getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/traj_opt.yaml");
 	YAML::Node cfg_     = YAML::LoadFile(cfg_path);
 	traj_time           = 2 * cfg_["radio_range"].as<double>() / cfg_["vel_max"].as<double>();
 	int horizon_num     = cfg_["horizon_num"].as<int>();

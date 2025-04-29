@@ -71,7 +71,7 @@ class YopoAlgorithm:
         self.tensorboard_log = tensorboard_log
         self.logger = configure_logger(self.verbose, self.tensorboard_log, "YOPO")
         # trajectory
-        cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
+        cfg = YAML().load(open(os.environ["FLIGHTMAADAPTIVE_POLICY_PATHRE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
         self.lattice_space = LatticeParam(cfg)
         self.lattice_primitive = LatticePrimitive(self.lattice_space)
 

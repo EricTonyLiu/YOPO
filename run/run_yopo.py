@@ -40,7 +40,7 @@ def main():
     args = parser().parse_args()
 
     # load configurations
-    cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
+    cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
     cfg["env"]["supervised"] = bool(args.supervised)
     cfg["env"]["imitation"] = bool(args.imitation)
     if not args.train:
@@ -48,9 +48,9 @@ def main():
     cfg["env"]["render"] = bool(args.render)
     if args.render:
         cfg["env"]["ply_path"] = "/flightrender/RPG_Flightmare/pointcloud_data/"  # change the paths during test or imitation
-        if not os.path.exists(os.environ["FLIGHTMARE_PATH"] + cfg["env"]["ply_path"]):
-            os.mkdir(os.environ["FLIGHTMARE_PATH"] + cfg["env"]["ply_path"])
-        os.system(os.environ["FLIGHTMARE_PATH"] + "/flightrender/RPG_Flightmare/flightmare.x86_64 &")
+        if not os.path.exists(os.environ["ADAPTIVE_POLICY_PATH"] + cfg["env"]["ply_path"]):
+            os.mkdir(os.environ["ADAPTIVE_POLICY_PATH"] + cfg["env"]["ply_path"])
+        os.system(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightrender/RPG_Flightmare/flightmare.x86_64 &")
 
     # create training environment
     train_env = QuadrotorEnv_v1(dump(cfg, Dumper=RoundTripDumper), False)

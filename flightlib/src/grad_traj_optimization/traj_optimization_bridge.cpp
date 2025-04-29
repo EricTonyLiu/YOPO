@@ -49,7 +49,7 @@ std::shared_ptr<sdf_tools::SignedDistanceField> SdfConstruction(pcl::PointCloud<
 }  // namespace traj_opt
 
 TrajOptimizationBridge::TrajOptimizationBridge() {
-	std::string cfg_path = getenv("FLIGHTMARE_PATH") + std::string("/flightlib/configs/traj_opt.yaml");
+	std::string cfg_path = getenv("ADAPTIVE_POLICY_PATH") + std::string("/flightlib/configs/traj_opt.yaml");
 	cfg_                 = YAML::LoadFile(cfg_path);
 	loadParam(cfg_);
 

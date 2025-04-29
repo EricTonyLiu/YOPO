@@ -56,7 +56,7 @@ class YopoNet:
         self.odom_ref_init = False
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
+        cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/traj_opt.yaml", 'r'))
         self.lattice_space = LatticeParam(cfg)
         self.lattice_primitive = LatticePrimitive(self.lattice_space)
 

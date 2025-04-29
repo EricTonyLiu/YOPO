@@ -14,7 +14,7 @@ from nav_msgs.msg import Odometry
 from scipy.spatial.transform import Rotation
 
 # IMPORTANT PARAM
-save_dir = os.environ["FLIGHTMARE_PATH"] + "/run/yopo_realworld"
+save_dir = os.environ["ADAPTIVE_POLICY_PATH"] + "/run/yopo_realworld"
 label_path = save_dir + "/label.npz"
 if not os.path.exists(save_dir):
     os.mkdir(save_dir)

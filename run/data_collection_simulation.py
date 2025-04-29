@@ -30,14 +30,14 @@ def main():
     configure_random_seed(args.seed)
 
     # load configurations
-    cfg = YAML().load(open(os.environ["FLIGHTMARE_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
+    cfg = YAML().load(open(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightlib/configs/vec_env.yaml", 'r'))
     cfg["env"]["num_envs"] = 1
     cfg["env"]["num_threads"] = 1
     cfg["env"]["render"] = True
     cfg["env"]["supervised"] = False
     cfg["env"]["imitation"] = False
 
-    os.system(os.environ["FLIGHTMARE_PATH"] + "/flightrender/RPG_Flightmare/flightmare.x86_64 &")
+    os.system(os.environ["ADAPTIVE_POLICY_PATH"] + "/flightrender/RPG_Flightmare/flightmare.x86_64 &")
     env = QuadrotorEnv_v1(dump(cfg, Dumper=RoundTripDumper), False)
     env = wrapper.FlightEnvVec(env)
     env.connectUnity()
@@ -45,7 +45,7 @@ def main():
     iteration = args.num_each_env
     epoch = args.num_env
 
-    home_dir = os.environ["FLIGHTMARE_PATH"] + cfg["env"]["dataset_path"]
+    home_dir = os.environ["ADAPTIVE_POLICY_PATH"] + cfg["env"]["dataset_path"]
     if not os.path.exists(home_dir):
         os.mkdir(home_dir)
 
@@ -58,7 +58,7 @@ def main():
         positions = np.zeros([iteration, 3], dtype=np.float32)
         quaternions = np.zeros([iteration, 4], dtype=np.float32)
 
-        save_dir = os.environ["FLIGHTMARE_PATH"] + cfg["env"]["dataset_path"] + str(epoch_i) + "/"
+        save_dir = os.environ["ADAPTIVE_POLICY_PATH"] + cfg["env"]["dataset_path"] + str(epoch_i) + "/"
         label_path = save_dir + "/label.npz"
         if not os.path.exists(save_dir):
             os.mkdir(save_dir)
