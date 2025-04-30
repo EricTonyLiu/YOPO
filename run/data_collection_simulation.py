@@ -19,7 +19,7 @@ def configure_random_seed(seed, env=None):
 def parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", type=int, default=0, help="random seed")
-    parser.add_argument("--num_each_env", type=int, default=10000, help="num of images to save in each env")
+    parser.add_argument("--num_each_env", type=int, default=1000, help="num of images to save in each env")
     parser.add_argument("--num_env", type=int, default=10, help="num of env to change")
     return parser
 
@@ -55,8 +55,6 @@ def main():
         spacing = cfg["unity"]["avg_tree_spacing"]
         if(use_multiple_scene):
             env.spawnMultipleScenesAndSavePointcloud(epoch_i)
-        else:
-            env.spawnTreesAndSavePointcloud(epoch_i, spacing)
         env.setMapID(np.array([-1]))
         env.reset(random=True)
 

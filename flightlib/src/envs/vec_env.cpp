@@ -297,6 +297,7 @@ bool VecEnv<EnvBase>::spawnTrees() {
 	if (!unity_ready_ || unity_bridge_ptr_ == nullptr)
 		return false;
 	bool remove_scene = true;
+	std::cout<<"USE SPAWN IN VECENV" << std::endl;
 	bool spawned = unity_bridge_ptr_->spawnTrees(bounding_box_, bounding_box_origin_, avg_tree_spacing_,remove_scene);
 	return spawned;
 }
@@ -365,13 +366,16 @@ bool VecEnv<EnvBase>::spawnMultipleScenesAndSavePointcloud(int ply_id_in) {
 		logger_.error("No scene is defined.");
 		return false;
 	}
-	bool remove_scene = false;
+	
 	for( int scene_idex = 0;scene_idex < num_scenes_; scene_idex++)
 	{
 		std::cout << "Spawn scene: " << scene_names_[scene_idex] << std::endl;
+		std::cout << "scene_idex: " << scene_idex << std::endl;
+		bool remove_scene = false;
 		if(scene_idex == 0)
 		{
-			bool remove_scene  = true;
+			remove_scene  = true;
+			std::cout << "remove_scene: " << remove_scene << std::endl;
 		}
 		bool spawned = unity_bridge_ptr_->spawnTrees(scene_bounding_box_[scene_idex], 
 											scene_bounding_box_origin_[scene_idex], 

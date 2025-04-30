@@ -3,7 +3,7 @@ import numpy as np
 
 # 1. 读取 PLY 文件
 
-ply_path = "./yopo_sim/pointcloud-0.ply"  # 替换为你的 PLY 文件路径
+ply_path = "./yopo_sim/pointcloud-1.ply"  # 替换为你的 PLY 文件路径
 # ply_path = "./yopo_sim/single_scene_data/pointcloud-0.ply"  # 替换为你的 PLY 文件路径
 point_cloud = o3d.io.read_point_cloud(ply_path)
 
@@ -15,7 +15,7 @@ points = np.asarray(point_cloud.points)
 colors = np.asarray(point_cloud.colors) if point_cloud.has_colors() else None
 
 # 筛选 Z < 6 的点
-mask = points[:, 2] < 5.0  # Z 轴是第 3 列（索引 2）
+mask = points[:, 2] < 7.0  # Z 轴是第 3 列（索引 2）
 filtered_points = points[mask]
 
 # 创建新的点云对象
